@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>Omaha Happy Hour</title>
+		<link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+		<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+		<link rel="apple-touch-startup-image" href="img/apple-touch-startup-image.png">
+		
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript" src="js/jquery.easy-pie-chart.js"></script>
+		<script type="text/javascript" src="js/o-script.js"></script>
+
+		<style>
+		  html, body, #map-canvas {
+			height: 300px;
+			margin: 0px;
+			padding: 0px
+		  }
+		</style>
+	
+		<script>
+			var myParam = location.search.split('myParam=')[1];
+			//alert("Look "+ myParam);
+			var items = [];
+			var a1 = "";
+			var lat1 = "-34.397";
+			var lon1 = "150.644";
+			var contentString = "";
+			var currentRName = "";
+			var mInfo = "Lookie here";
+			var x3 = "";
+			
+			/*
+			if (location.search) {
+				var parts = location.search.substring(1).split('&');
+				for (var i = 0; i < parts.length; i++) {
+					var nv = parts[i].split('=');
+					if (!nv[0]) continue;
+					params[nv[0]] = nv[1] || true;
+				}
+			}
+			*/
+			//alert('yea 2 '+myParam);
+			jQuery(function(){				
+				panelA();
+				function panelA() {
+					//alert('http://omahahappyhours.com/omaha3/services/s2.php?Id='+myParam+'&x=109');
+					//add DOW, current time of day HH:MM
+					//$.getJSON('http://omahahappyhours.com/omaha3/services/s2.php?Id='+myParam+'&x=109',
+					$.getJSON('http://omahahappyhours.com/omaha3/services/s2.php?Id='+myParam+' ',
+					// No additional parameters sent- If you want you can send below  
+					{},
+					function (data) { 
+						//alert('yea 2 ');											
+						$.each( data, function ( i, val ) {
+							items.push(val);// load array here
+							
+							a1 += '<article>';
+							if ( myParam != null || myParam != "") {
+									a1 += '</br><img src="http://omahahappyhours.com/omaha3/services/img/'+myParam+'.jpg" alt="Image not found" onError="this.src="img/gallery/2.jpg"/>';
+								}else{
+									a1 += '</br><img src="http://omahahappyhours.com/omaha3/services/img/gallery/2.jpg" alt="Image not found" onError="this.src="img/gallery/2.jpg"/>';
+								};
+								//a1 +='</br><img src="http://omahahappyhours.com/omaha3/services/App/img/gallery/2.jpg" alt="Image not found" onError="this.src="img/gallery/2.jpg" />';
+								
+								a1 += '<div class="prod-single-content">';
+									//a1 += '<h2><a href="HappyHours.html?p1='+myParam+'&p2='+val['Name']+'&p3=5">'+val['Name']+'</a></h2>';
+									a1 += '<h1><b>'+val['Name']+'</b></h1>';
+									//a1 += '<br/>';
+									
+									currentRName = val['Name'];
+									mInfo = val['Name']+"</br>"+val['Address']+"</br>"+val['City']+" "+val['State']+" "+val['Zip']+'</br><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</a>';
+										
+									a1 += '<div stlyle="height=100%;">';
+									a1 += '		<h1><b>SUNDAY</b></h1>';
+									a1 += '		<div id="d0">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;">';
+									a1 += '		<h1><b>MONDAY</b></h1>';
+									a1 += '		<div id="d1">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;line-height: 0.5cm;">';
+									a1 += '		<h1><b>TUESDAY</b></h1>';
+									a1 += '		<div id="d2">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;">';
+									a1 += '		<h1><b>WEDNESDAY</b></h1>';
+									a1 += '		<div id="d3">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;">';
+									a1 += '		<h1><b>THURSDAY</b></h1>';
+									a1 += '		<div id="d4">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;">';
+									a1 += '		<h1><b>FRIDAY</b></h1>';
+									a1 += '		<div id="d5">Loading...</div>';
+									a1 += '	</div>';
+										
+									a1 += '	<div stlyle="height=100%;">';
+									a1 += '		<h1><b>SATURDAY</b></h1>';
+									a1 += '		<div id="d6">Loading...</div>';
+									a1 += '	</div>';									
+
+									a1 += '<p>';
+									a1 += '<div class="product-single-meta">';
+										a1 += '<div class="p-single-meta-share">';
+											a1 += '<h4>Share</h4>';
+											a1 += '<a href="'+val['FacebookURL']+'"><i class="fa fa-facebook"></i></a>';
+											a1 += '<a href="'+val['TwitterURL']+'"><i class="fa fa-twitter"></i></a>';
+										a1 += '</div>';									
+									a1 += '</div>';
+									a1 += '</p>';
+								a1 += '</div>';
+																
+								<!-- MAP -->
+								a1 += '<div data-role="page" id="map-page" data-url="map-page">';
+									a1 += '<div data-role="header" data-theme="a">';
+									a1 += '<h1>Map And Directions</h1>';
+									a1 += ' </div>';
+									a1 += '<div id="map-canvas">';
+										a1 += ' map loads here... ';
+									a1 += '</div>';
+								a1 += '</div>';
+								
+							a1 += '</article></br></br></br></br></br>';
+							
+							lat1 = val['Latitude'];
+							lon1 = val['Longitude'];
+						});
+						
+						$('#1-data').html(a1);
+						pgDetails(myParam);
+					})
+					.error(function() { 
+						//alert("error");
+						var e ="";						
+						e += '</br></br></br></br></br>No Additional Information Found</br></br><img src="http://omahahappyhours.com/omaha3/services/img/'+myParam+'.jpg" alt="Image not found" onError="this.src="img/gallery/2.jpg"/>';
+						e += '</br><a href="javascript:history.back();" ><i class="fa fa-arrow-left"></i> BACK </a>';
+						$('#1-data').html(e);
+					});
+					// 
+					
+					
+					if ( lat1 != '0') {
+						setTimeout(function(){ loadScript(); }, 3000);
+						//loadScript();
+					};
+				}
+		
+				function HTMLDecode(s){
+					//Encoder.EncodeType = "htmlDecode";
+					//return jQuery('<div></div>').html(s).text();
+					 //return $("<div />").text(s).html();
+					  return Encoder.htmlDecode(s);
+				}
+
+				
+			});
+			
+			function fixNum(x) {
+				var newNum = Math.round(x);
+				
+			return newNum;	
+			}
+			// https://developers.google.com/maps/documentation/javascript/examples/map-simple-async
+			//center: new google.maps.LatLng(-34.397, 150.644)
+			// new google.maps.LatLng(request.getParameter("latitude"),request.getParameter("longitude"));
+			function initialize() {
+			//alert(lat1+" look "+ lon1);
+				 var myLatlng = new google.maps.LatLng(parseFloat(lat1), parseFloat(lon1));
+			  var mapOptions = {
+				zoom: 8,
+				center: new google.maps.LatLng(parseFloat(lat1), parseFloat(lon1))
+			  };
+
+			  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions); 
+			  /*
+			  var contentString = '<div id="content">'+
+				  '<h1 id="firstHeading" class="firstHeading">xxx</h1>'+
+				  '<div id="bodyContent">'+
+				  
+				  '</div>'+
+				  '</div>';
+			 */
+				  
+				  var infowindow = new google.maps.InfoWindow({
+				  content: mInfo
+			  });
+			  
+			  
+			  var marker = new google.maps.Marker({
+				  position: myLatlng,
+				  map: map,
+				   animation: google.maps.Animation.DROP,
+				  title: currentRName
+			  });
+			  
+			  google.maps.event.addListener(marker, 'click', function() {
+				infowindow.open(map,marker);
+			  });
+			}
+
+			
+  
+			function loadScript() {
+			  var script = document.createElement('script');
+			  script.type = 'text/javascript';
+			  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
+				  '&signed_in=true&callback=initialize';
+			  document.body.appendChild(script);
+			}
+			
+			function doit() {
+				return '-34.397,150.644';
+			}
+		
+		
+		function pgDetails(id) {
+				
+			var items = [];
+			var a0 = "";
+			var a1 = "";
+			var a2 = "";
+			var a3 = "";
+			var a4 = "";
+			var a5 = "";
+			var a6 = "";
+			var d = "";//new Date();
+			var tue = "";
+			
+				//alert(" Look 1: "+id );
+			var link = 'http://omahahappyhours.com/omaha3/services/s4.php?id='+id+'&x=2';
+				$.getJSON(link,
+				{},
+				function (data) {  					
+					$.each( data, function ( i, val ) {
+						items.push(val);// load array here							
+						//alert(" Look: " );
+						var str = decodeURIComponent( val['HHDescription'] );						
+						var d = str.replace(/[+]/g, ' ');
+
+						switch(val['DayOfWeekId']) {
+							case '0':
+								a0 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a0 += '<h2>'+d+'</h2>';
+							break;
+							case '1':
+								a1 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a1 += '<h2>'+d+'</h2>';
+							break;
+							
+							case '2':
+								a2 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a2 += '<h2>'+d+'</h2>';
+							break;
+							case '3':
+								a3 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a3 += '<h2>'+d+'</h2>';
+							break;
+							case '4':
+								a4 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a4 += '<h2>'+d+'</h2>';
+							break;
+							case '5':
+								a5 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a5 += '<h2>'+d+'</h2>';
+							break;
+							case '6':
+								a6 += '<h2><b>Happy Hour '+val['st1']+' to '+val['et1']+'</b></h2>';
+								a6 += '<h2>'+d+'</h2>';
+							break;
+							
+						};
+					});
+
+					if ( a0.length != 0 ) {
+						$('#d0').html(a0);
+					}else{
+						$('#d0').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a1.length != 0 ) {
+						$('#d1').html(a1);
+					}else{
+						$('#d1').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a2.length != 0 ) {
+						$('#d2').html(a2);
+					}else{
+						$('#d2').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a3.length != 0 ) {
+						$('#d3').html(a3);
+					}else{
+						$('#d3').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a4.length != 0 ) {
+						$('#d4').html(a4);
+					}else{
+						$('#d4').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a5.length != 0 ) {
+						$('#d5').html(a5);
+					}else{
+						$('#d5').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+					if ( a6.length != 0 ) {
+						$('#d6').html(a6);
+					}else{
+						$('#d6').html("<h2><em>No Happy Hour Events</em></h2>");
+					};
+					
+				});
+		}
+			
+		</script>
+		
+	</head>
+	<body class="o-page p-product-single">
+	<style>
+		.cel1{
+			width:30%;
+			height:auto;
+			display:inline-block;
+		}
+		.divider{
+			width:2%;
+			height:auto;
+			display:inline-block;
+		}		
+		.cel2{
+			width:40%;
+			height:auto;
+			display:inline-block;
+		}
+	</style>
+		
+		<div id="page">
+			<div id="header">
+				<div class="header-content">
+					<a href="index.html" class="p-link-homeB"><i class="fa fa-home"></i></a>
+					<a class="menu-btn" href="#menu"></a>
+					<a href="javascript:history.back();" class="p-link-backB"><i class="fa fa-arrow-left"></i></a>
+				</div>
+			</div>
+			<div id="content">
+				<div id="1-data">Loading...</br><div style="text-align: center;width:100%"><img src="img/logo1.png" width="225" height="50" /></div></div>
+				<!--
+				<article>
+					<img src="img/gallery/2.jpg" />
+					
+					<div class="prod-single-content-h">
+						<div class="prod-pricePane" style="Display: none">
+							<span class="last-price">9.95</span>
+							<span class="current-price">6.95</span>
+							<span class="currency">$</span>
+						</div>
+						
+						<div class="products-ratings" style="Display: none">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-half-empty"></i>
+						</div>
+					</div>
+					<div class="prod-single-content">
+						<h2><a href="#">Company Name</a></h2>
+						<br/>
+						<p>
+							Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+						</p>
+					</div>
+					<div class="product-single-meta">
+						<div class="p-single-meta-likes" style="Display: none">
+							<h4>Like</h4>
+							<i class="fa fa-thumbs-up"></i> 21
+						</div>
+						
+						<div class="p-single-meta-share">
+							<h4>Share</h4>
+							<a href="#"><i class="fa fa-facebook"></i></a>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-google-plus"></i></a>
+						</div>
+						
+					</div>
+				</article>
+				-->
+				
+			</div>
+			<div class="subFooterEDS">Copyright 2015. All rights reserved.</div>
+			
+			<!-- Menu navigation -->
+			<nav id="menu">
+				<ul></br></br>
+					<li class="Selected">
+						<a href="index.html">
+							<i class="fa fa-home"></i>Home
+						</a>
+					</li>
+					<li>
+						<a href="all.html">
+							<i class="fa fa-th-list"></i>Todays Specials
+						</a>
+					</li>
+					<li>
+						<a href="allList.html">
+							<i class="fa fa-th-list"></i>Happy Hours
+						</a>
+					</li>
+                    <li>
+						<a href="allMap.html">
+							<i class="fa fa-th-list"></i>Happy Hour Map
+						</a>
+					</li>
+					<li>
+						<a href="taxiService.html">
+							<i class="fa fa-users"></i>Call A Cab
+						</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</div>
+	</body>
+</html>

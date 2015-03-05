@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>Omaha Happy Hour</title>
+		<link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+		<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+		<link rel="apple-touch-startup-image" href="img/apple-touch-startup-image.png">
+		
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript" src="js/jquery.easy-pie-chart.js"></script>
+		<script type="text/javascript" src="js/o-script.js"></script>
+
+		<style>
+		  html, body, #map-canvas {
+			height: 760px;
+			margin: 0px;
+			padding: 0px
+		  }
+		</style>
+	
+		<script>
+			var myParam = location.search.split('myParam=')[1];
+			//alert("Look "+ myParam);
+			var items = [];
+			var a1 = "";
+			//var lat1 = "-34.397";
+			//var lon1 = "150.644";
+			var lat1 = "41.260482";
+			var lon1 = "-96.012990";
+			var contentString = "";
+			var d = new Date();
+			var dayofweek = 6; //d.getDay();
+			var infowindow = null;
+			var mInfo = "Lookie here";
+
+			jQuery(function(){	
+				
+				// GPS
+				navigator.geolocation.getCurrentPosition(function(position)
+				{
+					// just to show how to access latitute and longitude
+					//var location = [position.coords.latitude, position.coords.longitude];
+					//lat1 = position.coords.latitude;
+					//lon1 = position.coords.longitude;
+					
+					//alert(dayofweek+' look: '+ location);
+					if ( panelA() == "ok" ) {
+						//alert("X "+ items.length);
+						if ( lat1 != '0') {
+							setTimeout(function(){ loadScript(); }, 3000);
+						};
+					};
+				},
+				function(error)
+				{
+					// error getting GPS coordinates
+					alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+				}, 
+				{ enableHighAccuracy: true, maximumAge: 3000, timeout: 8000 });
+				// END GPS
+				
+				
+				function panelA() {
+					//alert('yea 1');	
+					//var link = 'http://omahahappyhours.com/omaha3/services/s0.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday=10:00';
+					var link = 'http://omahahappyhours.com/omaha3/services/s1.php';
+					$.getJSON(link,
+					{},
+					function (data) {  
+						//alert('yea 2');					
+						//var items = [];						
+						$.each( data, function ( i, val ) {
+							items.push(val);// load array here							
+
+							mInfo = val['Name']+" "+val['Address']+" "+val['City']+" "+val['State']+" "+val['Zip']+' tel: '+ val['Phone']+' ';
+									
+							a1 += '<h2><a href="#">'+val['Name']+'</a></h2>';
+							a1 += 'lat: '+items[i].Latitude+' : '+items[i].Longitude+' ';
+							//a1 += 'lat: '+items+' ';
+							a1 += '<br/>';
+							
+							//lat1 = val['Latitude'];
+							//lon1 = val['Longitude'];
+						});
+						
+						//$('#1-data').html(a1);
+						$('#1-data').html("");
+					});
+										
+					return "ok";
+				}
+		
+				function HTMLDecode(s){
+					//Encoder.EncodeType = "htmlDecode";
+					//return jQuery('<div></div>').html(s).text();
+					 //return $("<div />").text(s).html();
+					  return Encoder.htmlDecode(s);
+				}
+
+				
+			});
+			
+			function fixNum(x) {
+				var newNum = Math.round(x);
+				
+			return newNum;	
+			}
+			// https://developers.google.com/maps/documentation/javascript/examples/map-simple-async
+			//center: new google.maps.LatLng(-34.397, 150.644)
+			// new google.maps.LatLng(request.getParameter("latitude"),request.getParameter("longitude"));
+			function initialize() {
+				//alert(lat1+" look "+ lon1);
+				 var myLatlng = new google.maps.LatLng(parseFloat(lat1), parseFloat(lon1));
+			  var mapOptions = {
+				zoom: 10,
+				center: new google.maps.LatLng(parseFloat(lat1), parseFloat(lon1))
+			  };
+
+			  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions); 
+			  
+			  
+			  contentString = '<div id="content">'+
+					'<h1 id="firstHeading" class="firstHeading">xxx</h1>'+
+					  '<div id="mapBodyContent">Yea!'+				  
+					  '</div>'+
+				  '</div>';
+			 
+				  
+				var infowindow = new google.maps.InfoWindow({
+					content: mInfo
+				});
+			  
+			  /*
+			  var marker = new google.maps.Marker({
+				  position: myLatlng,
+				  map: map,
+				   animation: google.maps.Animation.DROP,
+				  title: 'Hello World!'
+			  });
+			  */
+			  
+			   var marker, i, t;
+			   for (i = 0; i < items.length; i++) {  
+				  marker = new google.maps.Marker({
+					position: new google.maps.LatLng(items[i].Latitude, items[i].Longitude),
+					map: map,
+					animation: google.maps.Animation.DROP,
+					title: mInfo 
+									
+				  });
+				  /*
+				  google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(' Hello ');			
+					//infowindow.open(map,marker);
+					infowindow.open(map,this);
+				  });
+				  */
+				}
+				/*
+				  google.maps.event.addListener(marker, 'click', function() {
+					//$('#mapBodyContent').html(items[i].Name);
+					//alert("Look");
+					infowindow.open(map,marker);
+				  });
+				*/  
+				
+				AutoCenter();
+			}
+
+			function AutoCenter() {
+				//  Create a new viewpoint bound
+				var bounds = new google.maps.LatLngBounds();
+				//  Go through each...
+				$.each(markers, function (index, marker) {
+					bounds.extend(marker.position);
+				});
+				//  Fit these bounds to the map
+				map.fitBounds(bounds);
+			}
+
+  
+			function loadScript() {
+			//alert("xxxx");
+			  var script = document.createElement('script');
+			  script.type = 'text/javascript';
+			  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
+				  '&signed_in=true&callback=initialize';
+			  document.body.appendChild(script);
+			}
+			
+			function doit() {
+				return '-34.397,150.644';
+			}
+		</script>
+		
+	</head>
+	<body class="o-page p-product-single">
+		<div id="page">
+			<div id="header">
+				<div class="header-content">
+					<a href="index.html" class="p-link-homeB"><i class="fa fa-home"></i></a>
+					<a class="menu-btn" href="#menu"></a>
+					<a href="javascript:history.back();" class="p-link-backB"><i class="fa fa-arrow-left"></i></a>
+				</div>
+			</div>
+			<div id="content">
+				<div id="1-data">Loading...</br><div style="text-align: center;width:100%"><img src="img/logo1.png" width="225" height="50" /></div></div>	
+				<div id="map-canvas" stlyle="height=100%;"></div>
+			</div>
+			<div class="subFooterEDS">Copyright 2015. All rights reserved.</div>
+			
+			<!-- Menu navigation -->
+			<nav id="menu">
+				<ul></br></br>
+					<li class="Selected">
+						<a href="index.html">
+							<i class="fa fa-home"></i>Home
+						</a>
+					</li>
+					<li>
+						<a href="all.html">
+							<i class="fa fa-th-list"></i>Todays Specials
+						</a>
+					</li>
+					<li>
+						<a href="allList.html">
+							<i class="fa fa-th-list"></i>Happy Hours
+						</a>
+					</li>
+                    <li>
+						<a href="allMap.html">
+							<i class="fa fa-th-list"></i>Happy Hour Map
+						</a>
+					</li>
+					<li>
+						<a href="taxiService.html">
+							<i class="fa fa-users"></i>Call A Cab
+						</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</div>
+	</body>
+</html>

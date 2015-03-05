@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>Omaha Happy Hour</title>
+		<link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+		<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+		<link rel="apple-touch-startup-image" href="img/apple-touch-startup-image.png">
+		
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript" src="js/jquery.easy-pie-chart.js"></script>
+		<script type="text/javascript" src="js/o-script.js"></script>
+		
+		<script>
+			var items = [];
+			var a1 = "";
+			var lat1 = "";
+			var lon1 = "";
+			var d = new Date();
+			var dayofweek = 6; //d.getDay();
+			
+			jQuery(function(){
+				
+				// GPS
+				navigator.geolocation.getCurrentPosition(function(position)
+				{
+					// just to show how to access latitute and longitude
+					var location = [position.coords.latitude, position.coords.longitude];
+					lat1 = position.coords.latitude;
+					lon1 = position.coords.longitude;
+					
+					//alert(dayofweek+' look: '+ location);
+					panelA();
+				},
+				function(error)
+				{
+					// error getting GPS coordinates
+					alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+				}, 
+				{ enableHighAccuracy: true, maximumAge: 3000, timeout: 8000 });
+				// END GPS
+				
+				
+				function panelA() {
+					//add DOW, current time of day HH:MM
+					var link = 'http://omahahappyhours.com/omaha3/services/s0.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday=10:00';
+					//alert(link);
+					$.getJSON(link,
+					{},
+					function (data) { 
+						//alert('yea 2');					
+						$.each( data, function ( i, val ) {
+							items.push(val);// load array here
+							
+							var str = decodeURIComponent( val['HHDescription'] );						
+							var d = str.replace(/[+]/g, ' ');
+							
+							a1 += '<article>';						
+							a1 += '<a href="all-single.html?myParam='+val['id']+'"> ';								
+								//a1 += '	<h1><b>'+val['name']+'</b></h1><h2><p>'+d+'</p></br><div class="cel1"><font color="black">'+fixNum(val['distance'])+' miles away </div><div class="divider"/><div class="cel2">'+val['st1']+' to '+val['et1']+'</font></div><h2>';	
+								a1 += '	<div style="color: #000000; "><h1><b>'+val['name']+'</b> <font size="3"> </h1>'+val['Address']+'</br>'+val['City']+' '+val['State']+' '+val['Zip']+'</div>';	
+								a1 += '<div style="color: #000000; "><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</a></div>';
+								a1 += '<div style="color: #000000; "><a href="'+ val['URL']+'" style="color: rgb(0,0,0)"> '+ val['URL']+'</a></div> </font></br>';
+								a1 += '<p><font size="3">'+d+'</font></p>';
+								//a1 += '</a>';
+								a1 += '<div class="a-meta">';								
+								a1 += '</div>';								
+							a1 += '</article>';
+							
+						});
+						//.success(function() { alert("second success"); })
+						//.error(function(jqXhr, textStatus, error) { alert("error"+ textStatus + ", " + error); })
+						//.complete(function() { alert("complete"); });
+
+						$('#1-data').html(a1);						
+					
+					});
+				}
+		
+				function HTMLDecode(s){
+					//Encoder.EncodeType = "htmlDecode";
+					//return jQuery('<div></div>').html(s).text();
+					 //return $("<div />").text(s).html();
+					  return Encoder.htmlDecode(s);
+				}
+
+				/*
+				var d = str.replace(/[+]/g, ' ');
+
+				{lat: "39.4129103420355175",
+					longitude: "-85.50678646649982",
+					dayofweek: "6" ,
+					timeofday: "10:00"}
+				*/
+				//panelB();
+				function panelB() {
+					//alert("Here B1");
+					//var items2 = [];
+					$.getJSON('http://omahahappyhours.com/omaha3/services/s0.php',
+					// No additional parameters sent- If you want you can send below  
+					{},					
+					function (data) {  
+						var items2 = [];
+						$.each( data, function ( i, val ) {
+							items2.push(val);// load array here
+						});
+						alert(items2[0].description+" B2."+items2[0].name);						
+						//x = randomBetween(0,items.length);
+						//$("#1B-data").html('<p><h5>'+items2[0].description+'</h5></p>');
+						//$("#txt2").html('<p><h5>'+items[x].msg+'</h5></p>');
+					})
+					//.success(function() { alert("second success"); })
+					.error(function(jqXhr, textStatus, error) { alert("error"+ textStatus + ", " + error); })
+					.complete(function() { alert("complete"); });
+
+				}
+				
+			});
+			
+			function fixNum(x) {
+				//var newNum = Math.round(x);
+				var newNum = Math.round(x*10)/10;
+				
+			return newNum;	
+			}
+		</script>
+		
+	</head>
+	<body class="o-page p-blog">
+		<style>
+			.cel1{
+				width:30%;
+				height:auto;
+				display:inline-block;
+			}
+			.divider{
+				width:30%;
+				height:auto;
+				display:inline-block;
+			}		
+			.cel2{
+				width:40%;
+				height:auto;
+				display:inline-block;
+			}
+		</style>
+		
+		<div id="page">
+			<div id="header">
+				<div class="header-content">
+					<a href="index.html" class="p-link-home"><i class="fa fa-home"></i></a>
+					<a class="menu-btn" href="#menu"></a>
+					<a href="javascript:history.back();" class="p-link-back"><i class="fa fa-arrow-left"></i></a>
+				</div>
+			</div>
+			<div class="bannerPane banner-img3">
+				<div class="overlay"></div>
+				<div class="s-banner-content">
+					<div><!-- <img  width="100" src="img/logo-pages.svg" />--></div>
+					<i class="fa fa-th-list"></i> Happy Hours
+				</div>
+			</div>
+			<div id="content">
+					
+				<div id="1-data">Loading...</br><div style="text-align: center;width:100%"><img src="img/logo1.png" width="225" height="50" /></div></div>
+				<!--
+				<article>
+					<a href="product-single.html">
+						<div class="article-img-pane">
+							<img src="img/gallery/4.jpg" />
+						</div>
+						<h2><div id="1-data">...</div></h2>
+						<div class="prod-pricePane">
+							<span class="last-price">9.95</span>
+							<span class="current-price">6.95</span>
+							<span class="currency">$</span>
+						</div>
+					</a>
+					<div class="a-meta">
+						<span><i class="fa fa-thumbs-up"></i> 21</span> 
+						
+						<div class="products-ratings">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-half-empty"></i>
+						</div>
+					</div>
+				</article>
+				 
+				<article>
+					<a href="product-single.html">
+						<div class="article-img-pane">
+							<img src="img/gallery/1.jpg" />
+						</div>
+						<h2>Second product</h2>
+						<div class="prod-pricePane">
+							<span class="last-price">9.95</span>
+							<span class="current-price">6.95</span>
+							<span class="currency">$</span>
+						</div>
+					</a>
+					<div class="a-meta">
+						<span><i class="fa fa-thumbs-up"></i> 21</span> 
+						
+						<div class="products-ratings">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-half-empty"></i>
+						</div>
+					</div>
+				</article>
+				 
+				<article>
+					<a href="product-single.html">
+						<div class="article-img-pane">
+							<img src="img/gallery/3.jpg" />
+						</div>
+						<h2>Third product</h2>
+						<div class="prod-pricePane">
+							<span class="last-price">9.95</span>
+							<span class="current-price">6.95</span>
+							<span class="currency">$</span>
+						</div>
+					</a>
+					<div class="a-meta">
+						<span><i class="fa fa-thumbs-up"></i> 21</span> 
+						
+						<div class="products-ratings">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-half-empty"></i>
+						</div>
+					</div>
+				</article>
+				 
+				<article>
+					<a href="product-single.html">
+						<div class="article-img-pane">
+							<img src="img/gallery/1.jpg" />
+						</div>
+						<h2>Fourth product</h2>
+						<div class="prod-pricePane">
+							<span class="last-price">9.95</span>
+							<span class="current-price">6.95</span>
+							<span class="currency">$</span>
+						</div>
+					</a>
+					<div class="a-meta">
+						<span><i class="fa fa-thumbs-up"></i> 21</span> 
+						
+						<div class="products-ratings">
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star"></i>
+							<i class="fa fa-star-half-empty"></i>
+						</div>
+					</div>
+				</article>
+				-->
+				
+			</div>
+			<div class="subFooter">Copyright 2013. All rights reserved.</div>
+
+			<!-- Menu navigation -->
+			<nav id="menu">
+				<ul></br></br>
+					<li class="Selected">
+						<a href="index.html">
+							<i class="fa fa-home"></i>Home
+						</a>
+					</li>
+					<li>
+						<a href="all.html">
+							<i class="fa fa-th-list"></i>Todays Specials
+						</a>
+					</li>
+					<li>
+						<a href="allList.html">
+							<i class="fa fa-th-list"></i>Happy Hours
+						</a>
+					</li>
+                    <li>
+						<a href="allMap.html">
+							<i class="fa fa-th-list"></i>Happy Hour Map
+						</a>
+					</li>
+					<li>
+						<a href="taxiService.html">
+							<i class="fa fa-users"></i>Call A Cab
+						</a>
+					</li>
+				</ul>
+			</nav>
+			
+		</div>
+		
+		
+		
+	</body>
+</html>
