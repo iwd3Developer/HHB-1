@@ -5,14 +5,14 @@
         HHOmaha.
     </description>
     <author email="support@iwd3.com" href="http://iwd3.com">
-        IWD3 Dev Team
+        IWD3 Team
     </author>
 	
 	<feature name="http://api.phonegap.com/1.0/device" />
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 
     <preference name="permissions" value="INTERNET" />
-    <preference name="phonegap-version" value="3.7.0" />
+    <preference name="phonegap-version" value="3.6.0" />
     <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
