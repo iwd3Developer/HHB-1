@@ -5,7 +5,7 @@
         HHOmaha.
     </description>
     <author email="support@iwd3.com" href="http://iwd3.com">
-        IWD3 Team
+        IWD3 Dev Team
     </author>
 	
 	<feature name="http://api.phonegap.com/1.0/device" />
@@ -45,7 +45,6 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
-	
     <icon src="icon.png" />
     <icon gap:platform="android" gap:qualifier="ldpi" src="res/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="res/icon/android/icon-48-mdpi.png" />
@@ -78,5 +77,4 @@
 	<access origin="mailto:*" launch-external="yes"/>
 	<access origin="sms:*" launch-external="yes"/>
 	<access origin="market:*" launch-external="yes"/>
-	
 </widget>
