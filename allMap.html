@@ -40,7 +40,7 @@
 			var d = new Date();
 			var dayofweek = 6; //d.getDay();
 			var infowindow = null;
-			var mInfo = "Lookie here";
+			var mInfo = []; //"Lookie here";
 
 			jQuery(function(){	
 				
@@ -81,7 +81,7 @@
 						$.each( data, function ( i, val ) {
 							items.push(val);// load array here							
 
-							mInfo = val['Name']+" "+val['Address']+" "+val['City']+" "+val['State']+" "+val['Zip']+' tel: '+ val['Phone']+' ';
+							mInfo.push( val['Name']+" "+val['Address']+" "+val['City']+" "+val['State']+" "+val['Zip']+' tel: '+ val['Phone']+' ');
 									
 							a1 += '<h2><a href="#">'+val['Name']+'</a></h2>';
 							a1 += 'lat: '+items[i].Latitude+' : '+items[i].Longitude+' ';
@@ -136,7 +136,7 @@
 			 
 				  
 				var infowindow = new google.maps.InfoWindow({
-					content: mInfo
+					content: mInfo[0]
 				});
 			  
 			  /*
@@ -154,15 +154,17 @@
 					position: new google.maps.LatLng(items[i].Latitude, items[i].Longitude),
 					map: map,
 					animation: google.maps.Animation.DROP,
-					title: mInfo 									
+					title: mInfo[i],
+					content: mInfo[i]									
 				  });
-				  /*
-				  google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(' Hello ');			
-					//infowindow.open(map,marker);
-					infowindow.open(map,this);
-				  });
-				  */
+				  
+				  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+					  infowindow.setContent(mInfo[i]);
+					  infowindow.open(map, marker);
+					}
+				  })(marker, i));
+	  
 				}
 				/*
 				  google.maps.event.addListener(marker, 'click', function() {

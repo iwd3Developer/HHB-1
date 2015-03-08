@@ -74,11 +74,13 @@
 								
 								a1 += '<div class="prod-single-content">';
 									//a1 += '<h2><a href="HappyHours.html?p1='+myParam+'&p2='+val['Name']+'&p3=5">'+val['Name']+'</a></h2>';
-									a1 += '<h1><b>'+val['Name']+'</b></h1>';
 									
-									currentRName = val['Name'];
-									mInfo = val['Name']+"</br>"+val['Address']+"</br>"+val['City']+" "+val['State']+" "+val['Zip']+'</br><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</a>';
-										
+									a1 += '<h1><b><font size="6">'+val['Name']+'</font></b></h1>';
+									mInfo = '<font size="3">'+val['Address']+"</br>"+val['City']+" "+val['State']+" "+val['Zip']+'</br><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</br><a href="https://maps.google.com?saddr=Current+Location&daddr='+val['Address']+' '+val['City']+' '+val['State']+' '+val['Zip']+'"style="color: rgb(0,0,0)">Driving Directions</a>';
+									a1 += mInfo+'</br><a href="'+val['URL']+'" style="color: rgb(0,0,0)">'+val['URL']+'</a></font></br>';
+									
+									//a1 += '</br><font size="4"><a href="https://maps.google.com?saddr=Current+Location&daddr='+val['Address']+' '+val['City']+' '+val['State']+' '+val['Zip']+' style="color: rgb(0,0,0);">Driving Directions</a>';
+									
 									a1 += '<div stlyle="height=100%;">';
 									a1 += '		<h1><b>SUNDAY</b></h1>';
 									a1 += '		<div id="d0">Loading...</div>';
@@ -204,8 +206,9 @@
 			  var marker = new google.maps.Marker({
 				  position: myLatlng,
 				  map: map,
-				   animation: google.maps.Animation.DROP,
-				  title: currentRName
+				  animation: google.maps.Animation.DROP,
+				  title: currentRName,
+				  content: mInfo
 			  });
 			  
 			  google.maps.event.addListener(marker, 'click', function() {
