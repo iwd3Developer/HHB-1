@@ -26,6 +26,14 @@
 			var lon1 = "";
 			var d = new Date();
 			var dayofweek = d.getDay();
+			
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+				
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Todays Specials", 2);
+			}
 
 			jQuery(function(){
 				

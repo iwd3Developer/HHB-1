@@ -43,6 +43,14 @@
 			var mInfo = []; //"Lookie here";
 			var mInfo2 = [];
 
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+				
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Map", 6);
+			}
+			
 			jQuery(function(){	
 				
 				// GPS

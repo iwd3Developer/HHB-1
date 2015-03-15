@@ -27,6 +27,14 @@
 			var d = new Date();
 			var dayofweek = 6; //d.getDay();
 			
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+				
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Happy Hours", 3);
+			}
+			
 			jQuery(function(){
 				
 				// GPS
@@ -94,6 +102,7 @@
 
 				/*
 				var d = str.replace(/[+]/g, ' ');
+
 				{lat: "39.4129103420355175",
 					longitude: "-85.50678646649982",
 					dayofweek: "6" ,

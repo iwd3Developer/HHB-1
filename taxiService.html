@@ -22,6 +22,15 @@
 		<script>
 			var items = [];
 			var a1 = "";
+			
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+				
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Taxi", 5);
+			}
+			
 			jQuery(function(){					
 				panelA();
 				function panelA() {
@@ -68,7 +77,8 @@
 										a1 += '<i class="fa fa-star-half-empty"></i>';
 									a1 += '</div>';
 								a1 += '</div>';
-							a1 += '</div>';		
+							a1 += '</div>';
+							//a1 += '</br></br></br></br></br>';			
 						});	
 							
 						a1 += '<div>';

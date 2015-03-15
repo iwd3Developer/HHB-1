@@ -39,6 +39,14 @@
 			var mInfo = "Lookie here";
 			var x3 = "";
 			
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+				
+				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Single", 4);
+			}
+			
 			/*
 			if (location.search) {
 				var parts = location.search.substring(1).split('&');
