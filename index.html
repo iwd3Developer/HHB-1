@@ -24,12 +24,75 @@
 		<script type='text/javascript' src='js/slider/camera.min.js'></script> 
 		
 		<!-- <script src="MetroTitles/Scripts/MetroJs/bundles/MetroJs.min.js" type="text/javascript"></script> -->
+		<!-- exit app: navigator.app.exitApp() - I -->
+		
 		<script>
 			var items = [];
 			var items2 = [];
 			var myDate = new Date();
 			var dayofweek  = myDate.getDay();
 			
+			/*
+			if(navigator.app){
+					navigator.app.exitApp();
+			}else if(navigator.device){
+					navigator.device.exitApp();
+			}
+
+			function showConfirm() {
+					navigator.notification.confirm(
+						'Do you really want to exit?',  // message
+						exitFromApp,              // callback to invoke with index of button pressed
+						'Exit',            // title
+						'Cancel,OK'         // buttonLabels
+					);
+			}    
+			function exitFromApp(buttonIndex) {
+			  if (buttonIndex==2){
+			   navigator.app.exitApp();
+			}
+		
+			// google Ana: https://github.com/phonegap-build/GAPlugin/blob/340201342d7f33b3838f7d280b5cfc98aef4344d/README.md
+			1)  resultHandler - a function that will be called on success
+			2)  errorHandler - a function that will be called on error.
+			3)  category - This is the type of event you are sending such as "Button", "Menu", etc.
+			4)  eventAction - This is the type of event you are sending such as "Click", "Select". etc.
+			5)  eventLabel - A label that describes the event such as Button title or Menu Item name.
+			6)  eventValue - An application defined integer value that can mean whatever you want it to mean.
+			Example:
+			gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Button", "Click", "event only", 1);
+			gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "some.url.com");
+			
+			Finally, when your app shuts down, you'll want to cleanup after yourself by calling exit(); exit() accepts 2 arguments;
+			1)  resultHandler - a function that will be called on success
+			2)  errorHandler - a function that will be called on error.
+			Example:
+			gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
+			*/
+			
+			var gaPlugin;
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
+			}
+			
+			function exitFromApp() {
+			   exitAppPopup();
+			   //alert("bye!");
+			}
+			function exitAppPopup() {
+				navigator.notification.confirm(
+					  'Exit PhoneGap ' + device.cordova + ' Demo?'
+					, function(button) {
+						  if (button == 2) {
+							  navigator.app.exitApp();
+						  } 
+					  }
+					, 'Exit'
+					, 'No,Yes'
+				);  
+				return false;
+			}
 			
 			jQuery(function(){
 				
@@ -120,6 +183,17 @@
 					  return Encoder.htmlDecode(s);
 				}
 			});
+			/*
+			function showConfirm() {
+					navigator.notification.confirm(
+						'Do you really want to exit?',  // message
+						exitFromApp,              // callback to invoke with index of button pressed
+						'Exit',            // title
+						'Cancel,OK'         // buttonLabels
+					);
+			} 
+			*/			
+			
 		</script>
 	</head>
 	<body class="o-page p-home">
@@ -227,6 +301,9 @@
 							<i class="fa fa-users"></i>Taxi Service
 						</a>
 					</li>
+					
+						<button onclick="exitFromApp()">Click me</button>
+					
 					<!--
 					<li>
 						<a href="HappyHours.html?p1=108&p2=Cincinnati">
