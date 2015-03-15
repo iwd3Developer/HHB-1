@@ -69,29 +69,10 @@
 			Example:
 			gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
 			*/
-			
 			var gaPlugin;
 			function onDeviceReady() {
 				gaPlugin = window.plugins.gaPlugin;
 				gaPlugin.init(successHandler, errorHandler, "UA-59316302-1", 10);
-			}
-			
-			function exitFromApp() {
-			   exitAppPopup();
-			   //alert("bye!");
-			}
-			function exitAppPopup() {
-				navigator.notification.confirm(
-					  'Exit PhoneGap ' + device.cordova + ' Demo?'
-					, function(button) {
-						  if (button == 2) {
-							  navigator.app.exitApp();
-						  } 
-					  }
-					, 'Exit'
-					, 'No,Yes'
-				);  
-				return false;
 			}
 			
 			jQuery(function(){
@@ -301,8 +282,6 @@
 							<i class="fa fa-users"></i>Taxi Service
 						</a>
 					</li>
-					
-						<button onclick="exitFromApp()">Click me</button>
 					
 					<!--
 					<li>
