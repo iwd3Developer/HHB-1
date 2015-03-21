@@ -85,7 +85,7 @@
 									
 									a1 += '<h1><b><font size="6">'+val['Name']+'</font></b></h1>';
 									mInfo = '<font size="3">'+val['Address']+"</br>"+val['City']+" "+val['State']+" "+val['Zip']+'</br><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</br><a href="https://maps.google.com?saddr=Current+Location&daddr='+val['Address']+' '+val['City']+' '+val['State']+' '+val['Zip']+'"style="color: rgb(0,0,0)">Driving Directions</a>';
-									a1 += mInfo+'</br><a href="'+val['URL']+'" style="color: rgb(0,0,0)">'+val['URL']+'</a></font></br>';
+									a1 += mInfo+'</br><a href="http://'+val['URL']+'" style="color: rgb(0,0,0)">'+val['URL']+'</a></font></br>';
 									
 									//a1 += '</br><font size="4"><a href="https://maps.google.com?saddr=Current+Location&daddr='+val['Address']+' '+val['City']+' '+val['State']+' '+val['Zip']+' style="color: rgb(0,0,0);">Driving Directions</a>';
 									
@@ -126,11 +126,19 @@
 
 									a1 += '<p>';
 									a1 += '<div class="product-single-meta">';
+									//alert(val['FacebookURL']);
+									if (val['FacebookURL'] != "" && val['TwitterURL'] != "") {
 										a1 += '<div class="p-single-meta-share">';
 											a1 += '<h4>Share</h4>';
-											a1 += '<a href="'+val['FacebookURL']+'"><i class="fa fa-facebook"></i></a>';
-											a1 += '<a href="'+val['TwitterURL']+'"><i class="fa fa-twitter"></i></a>';
-										a1 += '</div>';									
+											if (val['FacebookURL'] != "" ){
+												a1 += '<a href="http://'+val['FacebookURL']+'"><i class="fa fa-facebook"></i></a>';
+											};
+											if (val['TwitterURL'] != "") {
+												a1 += '<a href="http://'+val['TwitterURL']+'"><i class="fa fa-twitter"></i></a>';
+											};
+										a1 += '</div>';	
+									};
+									
 									a1 += '</div>';
 									a1 += '</p>';
 								a1 += '</div>';

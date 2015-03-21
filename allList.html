@@ -35,8 +35,9 @@
 				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Menu", "Select", "Happy Hours", 3);
 			}
 			
+			
 			jQuery(function(){
-				
+				/*
 				// GPS
 				navigator.geolocation.getCurrentPosition(function(position)
 				{
@@ -46,7 +47,6 @@
 					lon1 = position.coords.longitude;
 					
 					//alert(dayofweek+' look: '+ location);
-					panelA();
 				},
 				function(error)
 				{
@@ -55,11 +55,14 @@
 				}, 
 				{ enableHighAccuracy: true, maximumAge: 3000, timeout: 8000 });
 				// END GPS
+				*/
 				
+				panelA();
 				
 				function panelA() {
 					//add DOW, current time of day HH:MM
-					var link = 'http://omahahappyhours.com/omaha3/services/s0.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday=10:00';
+					//var link = 'http://omahahappyhours.com/omaha3/services/s0.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday=10:00';
+					var link = 'http://omahahappyhours.com/omaha3/services/s0.php?x='+dayofweek+' ';
 					//alert(link);
 					$.getJSON(link,
 					{},
@@ -68,19 +71,21 @@
 						$.each( data, function ( i, val ) {
 							items.push(val);// load array here
 							
-							var str = decodeURIComponent( val['HHDescription'] );						
-							var d = str.replace(/[+]/g, ' ');
+							//var str = decodeURIComponent( val['HHDescription'] );						
+							//var d = str.replace(/[+]/g, ' ');
 							
 							a1 += '<article>';						
 							a1 += '<a href="all-single.html?myParam='+val['id']+'"> ';								
 								//a1 += '	<h1><b>'+val['name']+'</b></h1><h2><p>'+d+'</p></br><div class="cel1"><font color="black">'+fixNum(val['distance'])+' miles away </div><div class="divider"/><div class="cel2">'+val['st1']+' to '+val['et1']+'</font></div><h2>';	
-								a1 += '	<div style="color: #000000; "><h1><b>'+val['name']+'</b> <font size="3"> </h1>'+val['Address']+'</br>'+val['City']+' '+val['State']+' '+val['Zip']+'</div>';	
-								a1 += '<div style="color: #000000; "><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</a></div>';
-								a1 += '<div style="color: #000000; "><a href="'+ val['URL']+'" style="color: rgb(0,0,0)"> '+ val['URL']+'</a></div> </font></br>';
-								a1 += '<p><font size="3">'+d+'</font></p>';
-								//a1 += '</a>';
-								a1 += '<div class="a-meta">';								
-								a1 += '</div>';								
+								
+								a1 += '	<div style="color: #000000; "><h1><b>'+val['name']+'</b> </h1></div>';	
+								
+								//a1 += '	<div style="color: #000000; "><h1><b>'+val['name']+'</b> <font size="3"> </h1>'+val['Address']+'</br>'+val['City']+' '+val['State']+' '+val['Zip']+'</div>';	
+								//a1 += '<div style="color: #000000; "><a href="tel:'+ val['Phone']+'" style="color: rgb(0,0,0)"> Tel: '+ val['Phone']+'</a></div>';
+								//a1 += '<div style="color: #000000; "><a href="'+ val['URL']+'" style="color: rgb(0,0,0)"> '+ val['URL']+'</a></div> </font></br>';
+								//a1 += '<p><font size="3">'+d+'</font></p>';
+								//a1 += '<div class="a-meta">';								
+								//a1 += '</div>';								
 							a1 += '</article>';
 							
 						});
