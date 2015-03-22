@@ -52,6 +52,7 @@
 				{
 					// error getting GPS coordinates
 					alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+					panelA();
 				}, 
 				{ enableHighAccuracy: true, maximumAge: 3000, timeout: 8000 });
 				// END GPS
@@ -59,16 +60,27 @@
 				
 				function panelA() {
 					//add DOW, current time of day HH:MM
+					var currentdate = new Date();
+					var datetime = "Last Sync: " + currentdate.getDay() + "/"+currentdate.getMonth() 
+					+ "/" + currentdate.getFullYear() + " @ " 
+					+ currentdate.getHours() + ":" 
+					+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
+
 					//$.getJSON('http://omahahappyhours.com/omaha3/services/s1.php',
-					var link = 'http://omahahappyhours.com/omaha3/services/s0b.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday=10:00';
+					var link = 'http://omahahappyhours.com/omaha3/services/s0b.php?lat='+lat1+'&long='+lon1+'&dayofweek='+dayofweek+'&timeofday='+currentdate.getHours() + ":" 
+					+ currentdate.getMinutes();
+		
 					$.getJSON(link,
 					{},
-					function (data) { 				
+					function (data) { 
+						if ( data.length == 0) {
+							$('#1-data').html("</br></br></br></br></br><h3>&nbsp;&nbsp;No happy Hours events</br>&nbsp;&nbsp;found at this time, Sorry!</h3></br></br></br></br>");
+						};
 						$.each( data, function ( i, val ) {
 							items.push(val);// load array here
 							var str = decodeURIComponent( val['HHDescription'] );						
 							var d = str.replace(/[+]/g, ' ');
-							
+							alert("Count: "+ val.length);
 							a1 += '<article>';						
 							a1 += '<a href="all-single.html?myParam='+val['id']+'"> ';
 							a1 += '	<h1><b>'+val['name']+'</b></h1><h2><p>'+d+'</p></br><div class="cel1"><font color="black">'+fixNum(val['distance'])+' miles away </div><div class="divider"/><div class="cel2">'+val['st1']+' to '+val['et1']+'</font></div><h2>';	
@@ -296,7 +308,7 @@
 				-->
 				
 			</div>
-			<div class="subFooter">Copyright 2013. All rights reserved.</div>
+			<div class="subFooterEDS">Copyright 2013. All rights reserved.</div>
 
 			<!-- Menu navigation -->
 			<nav id="menu">
